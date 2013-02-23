@@ -1,7 +1,7 @@
 /*
-VFW Project 2
+VFW Project 3
 David Clark
-02/17/13
+02/24/13
 */
 
 window.addEventListener("DOMContentLoaded", function(){
@@ -109,6 +109,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		$('items').style.display = "block";
 		for(var i=0, j=localStorage.length; i<j;i++){
 			var makeLi = document.createElement('li');
+			var makeLinkLi = document.createElement('li');
 			makeList.appendChild(makeLi);
 			var key = localStorage.key(i);
 			var value = localStorage.getItem(key);
@@ -120,8 +121,28 @@ window.addEventListener("DOMContentLoaded", function(){
 				makeSubList.appendChild(makeSubLi);
 				var optSubText = obj[n][0]+" "+obj[n][1];
 				makeSubLi.innerHTML = optSubText;
+				makeSubList.appendChild(makeLinkLi);
 			}
+			makeItemLinks(localStorage.key(i), makeLinkLi);
 		}
+	}
+	
+	function makeItemLinks (key, makeLinkLi){
+		var editLink = document.createElement('a');
+		editLink.href = "#";
+		editLink.key = key;
+		var editText = "Edit loadout";
+		//editLink.addEventListener("click", editItem);
+		editLink.innerHTML = editText;
+		makeLinkLi.appendChild(editLink);
+		
+		var deleteLink = document.createElement('a');
+		deleteLink.href = "#";
+		deleteLink.key = key;
+		var deleteText = "Delete loadout";
+		//deleteLink.addEventListener("click", deleteItem);
+		deleteLink.innerHTML = deleteText;
+		makeLinkLi.appendChild(deleteLink);
 	}
 	
 	function clearLoadouts (){
