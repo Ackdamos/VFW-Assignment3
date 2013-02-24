@@ -88,7 +88,7 @@ window.addEventListener("DOMContentLoaded", function(){
 				$('addNewLoadout').style.display= "inline";
 				break;
 			case "off":
-				$('addGear').style.display = "blocl";
+				$('addGear').style.display = "block";
 				$('clear').style.display = "inline";
 				$('displayLink').style.display = "inline";
 				$('addNewLoadout').style.display= "none";
@@ -132,9 +132,12 @@ window.addEventListener("DOMContentLoaded", function(){
 		editLink.href = "#";
 		editLink.key = key;
 		var editText = "Edit loadout";
-		//editLink.addEventListener("click", editItem);
+		editLink.addEventListener("click", editItem);
 		editLink.innerHTML = editText;
 		makeLinkLi.appendChild(editLink);
+		
+		var breakTag = document.createElement('br');
+		makeLinkLi.appendChild(breakTag);
 		
 		var deleteLink = document.createElement('a');
 		deleteLink.href = "#";
@@ -143,6 +146,35 @@ window.addEventListener("DOMContentLoaded", function(){
 		//deleteLink.addEventListener("click", deleteItem);
 		deleteLink.innerHTML = deleteText;
 		makeLinkLi.appendChild(deleteLink);
+	}
+	
+	function editItem (){
+		var value = localStorage.getItem(this.key);
+		var loadout = JSON.parse(value);
+		toggleNavControls("off");
+		$('name').value = loadout.name[1];
+		$('gearName').value = loadout.gearName[1];
+		$('dateAdded').value = loadout.dateAdded[1];
+		$('weaponChoices').value = loadout.weaponChoices[1];
+		$('magAmount').value = loadout.magAmount[1];
+		if(loadout.grenade[1] == "Grenade"){
+			$('grenade').setAttribute("checked", "checked");
+		}
+		if(loadout.food[1] == "Food"){
+			$('food').setAttribute("checked", "checked");
+		}
+		if(loadout.drink[1] == "Drink"){
+			$('drink').setAttribute("checked", "checked");
+		}
+		if(loadout.medicine[1] == "Medicine"){
+			$('medicine').setAttribute("checked", "checked");
+		}
+		$('comments').value = loadout.comments[1];
+		submit.removeEventListener("click", storeLoadout);
+		$('submit').value = "Edit Loadout";
+		var editSubmit = $('submit');
+		editSubmit.addEventListener("click", validate);
+		editSubmit.key = this.key;
 	}
 	
 	function clearLoadouts (){
@@ -154,6 +186,10 @@ window.addEventListener("DOMContentLoaded", function(){
 			window.location.reload();
 			return false;
 		}
+	}
+	
+	function validate (){
+	
 	}
 	
 	var weaponChoices = [
