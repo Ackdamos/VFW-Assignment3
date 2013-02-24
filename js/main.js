@@ -58,8 +58,12 @@ window.addEventListener("DOMContentLoaded", function(){
 		}
 	}
 	
-	function storeLoadout (){
-		var keyGen					= Math.floor(Math.random()*100001);
+	function storeLoadout (key){
+		if(!key){
+			var keyGen					= Math.floor(Math.random()*100001);
+		}else{
+			id = key;
+		}
 		getGrenadeValue();
 		getFoodValue();
 		getDrinkValue();
@@ -75,7 +79,7 @@ window.addEventListener("DOMContentLoaded", function(){
 			loadout.drink			= ["Drink?", drinkValue];
 			loadout.medicine		= ["Medicine?", medicineValue];
 			loadout.comments		= ["Comments:", $('comments').value];
-		localStorage.setItem(keyGen, JSON.stringify(loadout));
+		localStorage.setItem(id, JSON.stringify(loadout));
 		alert("Loadout has been saved.");
 	}
 	
@@ -143,7 +147,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		deleteLink.href = "#";
 		deleteLink.key = key;
 		var deleteText = "Delete loadout";
-		//deleteLink.addEventListener("click", deleteItem);
+		deleteLink.addEventListener("click", deleteLoadout);
 		deleteLink.innerHTML = deleteText;
 		makeLinkLi.appendChild(deleteLink);
 	}
@@ -177,6 +181,17 @@ window.addEventListener("DOMContentLoaded", function(){
 		editSubmit.key = this.key;
 	}
 	
+	function deleteLoadout (){
+		var ask = confirm("Are you sure you want to delete this loadout?");
+		if (ask){
+			localStorage.removeItem(this.key);
+			alert("Loadout was deleted.");
+			window.location.reload();
+		}else {
+			alert("Loadout wasn't deleted.");
+		}
+	}
+	
 	function clearLoadouts (){
 		if(localStorage.length === 0){
 			alert("There are no saved loadouts to delete.");
@@ -188,8 +203,55 @@ window.addEventListener("DOMContentLoaded", function(){
 		}
 	}
 	
-	function validate (){
-	
+	function validate (e){
+		var getName 			= $('name');
+		var getGearName 		= $('gearName');
+		var getDateAdded 		= $('dateAdded');
+		var getWeaponChoices 	= $('weaponChoices');
+		
+		errorMsg.innerHTML = "";
+		getName.style.border = "1px solid black";
+		getGearName.style.border = "1px solid black";
+		getDateAdded.style.border = "1px solid black";
+		getWeaponChoices.style.border = "1px solid black";
+		
+		var errorArray = [];
+		if(getName.value === ""){
+			var nameError = "Please add your name.";
+			getName.style.border = "1px solid red";
+			errorArray.push(nameError);
+		}
+		
+		if(getGearName.value === ""){
+			var gearNameError = "Please add a loadout name.";
+			getGearName.style.border = "1px solid red";
+			errorArray.push(gearNameError);
+		}
+		
+		if(getDateAdded.value === ""){
+			var dateAddedError = "Please add a date.";
+			getDateAdded.style.border = "1px solid red";
+			errorArray.push(dateAddedError);
+		}
+		
+		if(getWeaponChoices.value === "--Select a Weapon--"){
+			var weaponChoicesError = "Please select a weapon.";
+			getWeaponChoices.style.border = "1px solid red";
+			errorArray.push(weaponChoicesError);
+		}
+		
+		if(errorArray.length >= 1){
+			for(var i=0, j=errorArray.length; i < j; i++){
+				var txt = document.createElement('li');
+				txt.innerHTML = errorArray[i];
+				errorMsg.appendChild(txt);
+			}
+			e.preventDefault();
+			return false;
+		}else{
+			storeLoadout(this.key);
+		}
+		
 	}
 	
 	var weaponChoices = [
@@ -233,7 +295,8 @@ window.addEventListener("DOMContentLoaded", function(){
 		grenadeValue = "No",
 		foodValue = "No",
 		drinkValue = "No",
-		medicineValue = "No";
+		medicineValue = "No",
+		errorMsg = $('errors');
 	
 	createWeapons();
 
@@ -246,7 +309,7 @@ window.addEventListener("DOMContentLoaded", function(){
 	displayDataLink.addEventListener("click", getLoadouts);
 	
 	var submit = $('submit');
-	submit.addEventListener("click", storeLoadout);
+	submit.addEventListener("click", validate);
 	
 
 

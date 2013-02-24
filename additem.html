@@ -27,19 +27,21 @@
 		
 		<form action="#" method="post" id="addGear">
 			
+			<ul id="errors"></ul>
 			<fieldset id="loadoutInformation">
+				<span>* are required fields</span>
 				<legend>Loadout Information</legend>
 					<ul>
-						<li><label for="name">Loadout Creator:</li></label><input type="text" id="name" />
-						<li><label for="gearName">Loadout Name:</li></label><input type="text" id="gearName" />
-						<li><label for="dateAdded">Creation Date:</li></label><input type="date" id="dateAdded" />
+						<li><label for="name">*Loadout Creator:</li></label><input type="text" id="name" />
+						<li><label for="gearName">*Loadout Name:</li></label><input type="text" id="gearName" />
+						<li><label for="dateAdded">*Creation Date:</li></label><input type="date" id="dateAdded" />
 					</ul>
 			</fieldset>
 			
 			<fieldset id="gearSelection">
 				<legend>Gear Selection</legend>
 					<ul>
-						<li id='select'><label for="weaponChoices">Choose a Weapon:</label><br /></li>
+						<li id='select'><label for="weaponChoices">*Choose a Weapon:</label><br /></li>
 					</ul>	
 
 				<ul>
